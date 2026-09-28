@@ -1,12 +1,16 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
+
     <meta charset="UTF-8">
+
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>One-Tap Label - Create Label</title>
 
     <style>
+
         body {
             margin: 0;
             font-family: Arial, sans-serif;
@@ -75,8 +79,34 @@
             color: #64748b;
             text-decoration: none;
         }
+
+        .label-card {
+            margin-top: 20px;
+            padding: 25px;
+            border: 2px solid #111827;
+            border-radius: 15px;
+            background: #f8fafc;
+        }
+
+        .delete-button {
+            background: #dc2626;
+            margin-top: 15px;
+        }
+
+        .delete-button:hover {
+            background: #b91c1c;
+        }
+
+        .qr-code {
+            margin-top: 20px;
+            display: flex;
+            justify-content: center;
+        }
+
     </style>
+
 </head>
+
 
 <body>
 
@@ -90,146 +120,290 @@
                 Give your stuff a digital identity.
             </p>
 
-            <label for="item">What's in this container?</label>
+
+            <label for="item">
+                What's in this container?
+            </label>
+
             <input
                 type="text"
                 id="item"
                 placeholder="Example: Christmas decorations"
             >
 
-            <label for="location">Where is it?</label>
+
+            <label for="location">
+                Where is it?
+            </label>
+
             <input
                 type="text"
                 id="location"
                 placeholder="Example: Garage - Shelf 3"
             >
 
-           <button onclick="createLabel()">Create Label</button>
 
-<div id="labelResult"></div>
+            <button onclick="createLabel()">
+                Create Label
+            </button>
 
-<a href="index.html" class="back">← Back to One-Tap Label</a>
+
+            <div id="labelResult"></div>
+
+
+            <a href="index.html" class="back">
+                ← Back to One-Tap Label
+            </a>
 
         </div>
 
     </div>
 
-<script>
 
-    function createLabel() {
+    <!-- QR CODE LIBRARY -->
 
-        const item = document.getElementById("item").value;
-        const location = document.getElementById("location").value;
+    <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
 
-        const result = document.getElementById("labelResult");
 
-        if (item === "" || location === "") {
-            result.innerHTML = "<p>Please enter both the item and its location.</p>";
-            return;
+    <script>
+
+        function createLabel() {
+
+            const item =
+                document.getElementById("item").value;
+
+            const location =
+                document.getElementById("location").value;
+
+            const result =
+                document.getElementById("labelResult");
+
+
+            if (item === "" || location === "") {
+
+                result.innerHTML =
+                    "<p>Please enter both the item and its location.</p>";
+
+                return;
+            }
+
+
+            let labels =
+                JSON.parse(
+                    localStorage.getItem("oneTapLabels")
+                ) || [];
+
+
+            const newLabel = {
+
+                id:
+                    "OTL-" +
+                    Math.random()
+                        .toString(36)
+                        .substring(2, 6)
+                        .toUpperCase(),
+
+                item: item,
+
+                location: location
+
+            };
+
+
+            labels.push(newLabel);
+
+
+            localStorage.setItem(
+                "oneTapLabels",
+                JSON.stringify(labels)
+            );
+
+
+            displayLabels();
+
+
+            document.getElementById("item").value = "";
+
+            document.getElementById("location").value = "";
+
         }
 
-        let labels = JSON.parse(localStorage.getItem("oneTapLabels")) || [];
-
-       const newLabel = {
-    id: "OTL-" + Math.random().toString(36).substring(2, 6).toUpperCase(),
-    item: item,
-    location: location
-};
-
-        labels.push(newLabel);
-
-        localStorage.setItem("oneTapLabels", JSON.stringify(labels));
-
-        displayLabels();
-
-        document.getElementById("item").value = "";
-        document.getElementById("location").value = "";
-    }
 
 
-    function deleteLabel(index) {
+        function deleteLabel(index) {
 
-        let labels = JSON.parse(localStorage.getItem("oneTapLabels")) || [];
-
-        labels.splice(index, 1);
-
-        localStorage.setItem("oneTapLabels", JSON.stringify(labels));
-
-        displayLabels();
-    }
+            let labels =
+                JSON.parse(
+                    localStorage.getItem("oneTapLabels")
+                ) || [];
 
 
-    function displayLabels() {
+            labels.splice(index, 1);
 
-        const result = document.getElementById("labelResult");
 
-        let labels = JSON.parse(localStorage.getItem("oneTapLabels")) || [];
-labels.forEach(function(label) {
+            localStorage.setItem(
+                "oneTapLabels",
+                JSON.stringify(labels)
+            );
 
-    if (!label.id) {
-        label.id = "OTL-" + Math.random().toString(36).substring(2, 6).toUpperCase();
-    }
 
-});
+            displayLabels();
 
-localStorage.setItem("oneTapLabels", JSON.stringify(labels));
-        if (labels.length === 0) {
-            result.innerHTML = "";
-            return;
         }
 
-        let html = "";
-
-        labels.forEach(function(label, index) {
-
-            html += `
-                <div style="
-                    margin-top: 20px;
-                    padding: 25px;
-                    border: 2px solid #111827;
-                    border-radius: 15px;
-                    background: #f8fafc;
-                ">
-
-<h2>Label ${index + 1}</h2>
-
-<p>
-    <strong>ID:</strong>
-    ${label.id || "Older label"}
-</p>
-
-<p>
-    <strong>Item:</strong>
-    ${label.item}
-</p>                    <p>
-                        <strong>Location:</strong>
-                        ${label.location}
-                    </p>
-
-                    <button onclick="deleteLabel(${index})" style="
-                        background: #dc2626;
-                        margin-top: 15px;
-                    ">
-                        Delete
-                    </button>
-
-                </div>
-            `;
-
-        });
-
-        result.innerHTML = html;
-    }
 
 
-    window.onload = function() {
+        function displayLabels() {
 
-        displayLabels();
+            const result =
+                document.getElementById("labelResult");
 
-    };
 
-</script>
+            let labels =
+                JSON.parse(
+                    localStorage.getItem("oneTapLabels")
+                ) || [];
 
-</script>
+
+            /*
+             * Give older labels an ID
+             */
+
+            labels.forEach(function(label) {
+
+                if (!label.id) {
+
+                    label.id =
+                        "OTL-" +
+                        Math.random()
+                            .toString(36)
+                            .substring(2, 6)
+                            .toUpperCase();
+
+                }
+
+            });
+
+
+            localStorage.setItem(
+                "oneTapLabels",
+                JSON.stringify(labels)
+            );
+
+
+            if (labels.length === 0) {
+
+                result.innerHTML = "";
+
+                return;
+
+            }
+
+
+            let html = "";
+
+
+            labels.forEach(function(label, index) {
+
+
+                html += `
+
+                    <div class="label-card">
+
+                        <h2>
+                            Label ${index + 1}
+                        </h2>
+
+
+                        <p>
+
+                            <strong>ID:</strong>
+
+                            ${label.id}
+
+                        </p>
+
+
+                        <p>
+
+                            <strong>Item:</strong>
+
+                            ${label.item}
+
+                        </p>
+
+
+                        <p>
+
+                            <strong>Location:</strong>
+
+                            ${label.location}
+
+                        </p>
+
+
+                        <div
+                            id="qr-${label.id}"
+                            class="qr-code"
+                        >
+                        </div>
+
+
+                        <button
+                            class="delete-button"
+                            onclick="deleteLabel(${index})"
+                        >
+
+                            Delete
+
+                        </button>
+
+                    </div>
+
+                `;
+
+            });
+
+
+            result.innerHTML = html;
+
+
+            /*
+             * Create QR codes after the labels
+             * have been added to the page.
+             */
+
+            labels.forEach(function(label) {
+
+                new QRCode(
+
+                    document.getElementById(
+                        "qr-" + label.id
+                    ),
+
+                    {
+                        text: label.id,
+                        width: 150,
+                        height: 150
+                    }
+
+                );
+
+            });
+
+        }
+
+
+
+        window.onload = function() {
+
+            displayLabels();
+
+        };
+
+    </script>
+
+
 </body>
+
 </html>
