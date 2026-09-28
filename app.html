@@ -130,10 +130,11 @@
 
         let labels = JSON.parse(localStorage.getItem("oneTapLabels")) || [];
 
-        const newLabel = {
-            item: item,
-            location: location
-        };
+       const newLabel = {
+    id: "OTL-" + Math.random().toString(36).substring(2, 6).toUpperCase(),
+    item: item,
+    location: location
+};
 
         labels.push(newLabel);
 
@@ -163,7 +164,15 @@
         const result = document.getElementById("labelResult");
 
         let labels = JSON.parse(localStorage.getItem("oneTapLabels")) || [];
+labels.forEach(function(label) {
 
+    if (!label.id) {
+        label.id = "OTL-" + Math.random().toString(36).substring(2, 6).toUpperCase();
+    }
+
+});
+
+localStorage.setItem("oneTapLabels", JSON.stringify(labels));
         if (labels.length === 0) {
             result.innerHTML = "";
             return;
@@ -182,14 +191,17 @@
                     background: #f8fafc;
                 ">
 
-                    <h2>Label ${index + 1}</h2>
+<h2>Label ${index + 1}</h2>
 
-                    <p>
-                        <strong>Item:</strong>
-                        ${label.item}
-                    </p>
+<p>
+    <strong>ID:</strong>
+    ${label.id || "Older label"}
+</p>
 
-                    <p>
+<p>
+    <strong>Item:</strong>
+    ${label.item}
+</p>                    <p>
                         <strong>Location:</strong>
                         ${label.location}
                     </p>
@@ -217,6 +229,7 @@
     };
 
 </script>
+
 </script>
 </body>
 </html>
