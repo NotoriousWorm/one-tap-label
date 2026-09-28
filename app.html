@@ -163,11 +163,23 @@
     <!-- QR CODE LIBRARY -->
 
     <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
-
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
     <script>
 
-        function createLabel() {
+        <script>
+
+    const SUPABASE_URL = "https://qzwxdthfwpgjysefyqqb.supabase.co";
+
+    const SUPABASE_KEY = "sb_publishable_qDToGRlUdHx1jY_6zDJmOw_OPrAF9HX";
+
+    const supabaseClient = supabase.createClient(
+        SUPABASE_URL,
+        SUPABASE_KEY
+    );
+
+
+    function createLabel() {
 
             const item =
                 document.getElementById("item").value;
