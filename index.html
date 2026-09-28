@@ -1,16 +1,95 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>One-Tap Label</title>
+
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f4f6f8;
+            color: #1f2937;
+            text-align: center;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 100px 20px;
+        }
+
+        h1 {
+            font-size: 56px;
+            margin-bottom: 10px;
+        }
+
+        .tagline {
+            font-size: 24px;
+            color: #64748b;
+            margin-bottom: 40px;
+        }
+
+        .card {
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+        }
+
+        .button {
+            display: inline-block;
+            padding: 15px 30px;
+            background: #111827;
+            color: white;
+            text-decoration: none;
+            border-radius: 10px;
+            font-size: 18px;
+            cursor: pointer;
+        }
+
+        .button:hover {
+            background: #374151;
+        }
+
+        .small-text {
+            margin-top: 30px;
+            color: #94a3b8;
+            font-size: 14px;
+        }
+    </style>
 </head>
 
 <body>
 
-    <h1>One-Tap Label</h1>
+    <div class="container">
 
-    <p>Give everything physical a digital identity.</p>
+        <div class="card">
 
-    <button>Get Started</button>
+            <h1>One-Tap Label</h1>
+
+            <div class="tagline">
+                Give everything physical a digital identity.
+            </div>
+
+            <p>
+                Organize your stuff. Find it faster.
+                Know what's inside without opening the box.
+            </p>
+
+            <br>
+
+           <a href="app.html" class="button">Get Started</a>
+
+            <div class="small-text">
+                Your physical world, organized.
+            </div>
+
+        </div>
+
+    </div>
 
 </body>
 </html>
