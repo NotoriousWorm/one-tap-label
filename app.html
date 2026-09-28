@@ -105,7 +105,10 @@
             >
 
            <button onclick="createLabel()">Create Label</button>
-            <a href="index.html" class="back">← Back to One-Tap Label</a>
+
+<div id="labelResult"></div>
+
+<a href="index.html" class="back">← Back to One-Tap Label</a>
 
         </div>
 
@@ -115,19 +118,29 @@
     function createLabel() {
         const item = document.getElementById("item").value;
         const location = document.getElementById("location").value;
+        const result = document.getElementById("labelResult");
 
         if (item === "" || location === "") {
-            alert("Please enter both the item and its location.");
+            result.innerHTML = "<p>Please enter both the item and its location.</p>";
             return;
         }
 
-        alert(
-            "Label created!\n\n" +
-            "Item: " + item + "\n" +
-            "Location: " + location
-        );
+        result.innerHTML = `
+            <div style="
+                margin-top: 30px;
+                padding: 25px;
+                border: 2px solid #111827;
+                border-radius: 15px;
+                background: #f8fafc;
+            ">
+                <h2>Label Created</h2>
+
+                <p><strong>Item:</strong> ${item}</p>
+
+                <p><strong>Location:</strong> ${location}</p>
+            </div>
+        `;
     }
 </script>
-
 </body>
 </html>
