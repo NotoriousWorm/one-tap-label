@@ -115,9 +115,12 @@
     </div>
 
 <script>
+
     function createLabel() {
+
         const item = document.getElementById("item").value;
         const location = document.getElementById("location").value;
+
         const result = document.getElementById("labelResult");
 
         if (item === "" || location === "") {
@@ -125,22 +128,95 @@
             return;
         }
 
-        result.innerHTML = `
-            <div style="
-                margin-top: 30px;
-                padding: 25px;
-                border: 2px solid #111827;
-                border-radius: 15px;
-                background: #f8fafc;
-            ">
-                <h2>Label Created</h2>
+        let labels = JSON.parse(localStorage.getItem("oneTapLabels")) || [];
 
-                <p><strong>Item:</strong> ${item}</p>
+        const newLabel = {
+            item: item,
+            location: location
+        };
 
-                <p><strong>Location:</strong> ${location}</p>
-            </div>
-        `;
+        labels.push(newLabel);
+
+        localStorage.setItem("oneTapLabels", JSON.stringify(labels));
+
+        displayLabels();
+
+        document.getElementById("item").value = "";
+        document.getElementById("location").value = "";
     }
+
+
+    function deleteLabel(index) {
+
+        let labels = JSON.parse(localStorage.getItem("oneTapLabels")) || [];
+
+        labels.splice(index, 1);
+
+        localStorage.setItem("oneTapLabels", JSON.stringify(labels));
+
+        displayLabels();
+    }
+
+
+    function displayLabels() {
+
+        const result = document.getElementById("labelResult");
+
+        let labels = JSON.parse(localStorage.getItem("oneTapLabels")) || [];
+
+        if (labels.length === 0) {
+            result.innerHTML = "";
+            return;
+        }
+
+        let html = "";
+
+        labels.forEach(function(label, index) {
+
+            html += `
+                <div style="
+                    margin-top: 20px;
+                    padding: 25px;
+                    border: 2px solid #111827;
+                    border-radius: 15px;
+                    background: #f8fafc;
+                ">
+
+                    <h2>Label ${index + 1}</h2>
+
+                    <p>
+                        <strong>Item:</strong>
+                        ${label.item}
+                    </p>
+
+                    <p>
+                        <strong>Location:</strong>
+                        ${label.location}
+                    </p>
+
+                    <button onclick="deleteLabel(${index})" style="
+                        background: #dc2626;
+                        margin-top: 15px;
+                    ">
+                        Delete
+                    </button>
+
+                </div>
+            `;
+
+        });
+
+        result.innerHTML = html;
+    }
+
+
+    window.onload = function() {
+
+        displayLabels();
+
+    };
+
+</script>
 </script>
 </body>
 </html>
